@@ -1,0 +1,11 @@
+<html>
+    {%extends 'layout.html'%}
+
+    {%block content%}
+<h1>This is {{group['name']}} group.</h1>
+<h4>size: {{group['size']}}</h4>
+<h4>Members: {{group['members']}}</h4>
+<ul><h5>Edit</h5>
+<h5><a href='/groups/'>Back</a></h5></ul>
+    {%endblock%}
+</html>

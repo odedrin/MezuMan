@@ -4,8 +4,11 @@
 <body>
      <ul>
           {% for group in groupscl.find() %}
-               <li>{{group.name}}</li>
-          {%endfor%}</ul>
+          <li>{{group['name']}}
+               <a href= {{url_for('group_info', groupname=group['name'])}}>info
+               </a>/
+               <a href= {{url_for('delete_group', groupname=group['name'])}}>delete</a></li>
+    {%endfor%}</ul>
           <h3><a href=/add_group/>Create new group</a></h3>
                <h3><a href= /users/>Go to users</a></h3>
 </body>

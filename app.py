@@ -58,12 +58,26 @@ def user_info(username):
         return render_template('user_info.html', title= username, user= user)
     else:
         return 'No such user'
+
+@app.route("/groups/<groupname>", methods= ["POST", "GET"])
+def group_info(groupname):
+    group = groupscl.find_one({'name': groupname})
+    if group != None:
+        return render_template('group_info.html', title= groupname, group= group)
+    else:
+        return 'No such group'
         
 @app.route("/users/delete_user/<username>", methods= ["POST", 'GET'])
 def delete_user(username):
     user = userscl.find_one_and_delete({'name':username})
     flash("The user %s was deleted Successfully" %(username))
     return redirect('/users/', code= 302)
+
+@app.route("/users/delete_group/<groupname>", methods= ["POST", 'GET'])
+def delete_group(groupname):
+    group = groupscl.find_one_and_delete({'name':groupname})
+    flash("The group %s was deleted Successfully" %(groupname))
+    return redirect('/groups/', code= 302)
 
 if __name__ == "__main__":
     app.run(port=8000, debug=True)
