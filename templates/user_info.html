@@ -1,0 +1,11 @@
+<html>
+    {%extends 'layout.html'%}
+
+    {%block content%}
+<h1>This is {{user['name']}}.</h1>
+<h4>balance: {{user['balance']}}</h4>
+<h4>Groups: {{user['groups']}}</h4>
+<ul><h5>Edit</h5>
+<h5><a href='/users/'>Back</a></h5></ul>
+    {%endblock%}
+</html>

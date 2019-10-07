@@ -1,0 +1,13 @@
+<html>
+{% extends "layout.html" %}
+{%block content%}
+<body>
+     <ul>
+          {% for group in groupscl.find() %}
+               <li>{{group.name}}</li>
+          {%endfor%}</ul>
+          <h3><a href=/add_group/>Create new group</a></h3>
+               <h3><a href= /users/>Go to users</a></h3>
+</body>
+{%endblock content%}
+</html>

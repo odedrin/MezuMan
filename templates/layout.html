@@ -1,0 +1,21 @@
+<html>
+    <head>
+        {% if title %}
+        <title>MezuMan - {{title}}</title>
+        {% else %}
+        <title>MezuMan</title>
+        {%endif%}
+    </head>
+    <body>
+            {% with messages = get_flashed_messages() %}
+            {%if messages %}
+            {% for message in messages %}
+            <ul>{{ message }}</ul>
+          {% endfor %}
+        {% endif %}
+      {% endwith %} 
+        {% block content %}{% endblock %}
+        <h5><a href= />Home</a></h3></h5>
+    </body>
+    </html>
+  

@@ -1,0 +1,18 @@
+<html>
+{% extends "layout.html" %}
+{%block content%}
+<body>
+     <ul>
+          {% for user in userscl.find() %}
+               <li>{{user['name']}}
+                     <a href= {{url_for('user_info', username=user['name'])}}>info
+                     </a>/
+                     <a href= {{url_for('delete_user', username=user['name'])}}>delete</a></li>
+          {%endfor%}</ul>
+
+          <h3><a href=/add_user/>Create new user</a></h3>
+          <h3><a href= /groups/>Go to Groups</a></h3>
+          
+</body>
+{%endblock content%}
+</html>
