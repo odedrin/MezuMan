@@ -41,12 +41,12 @@ def add_user():
         else:
             flash("Invalid username, please try again")
             return render_template('add_user.html', title = 'Add user', userscl =userscl)
-    except backend.group_functions.DuplicateError:
+    except DuplicateError:
         flash("Username already exists, try a different one.")
         return render_template('add_user.html', title = 'Add user', userscl =userscl)
-    # except:
-    #     flash("Something went wrong")
-    #     return render_template('add_user.html', title = 'Add user', userscl =userscl)
+    except:
+        flash("Something went wrong")
+        return render_template('add_user.html', title = 'Add user', userscl =userscl)
 
 @app.route("/add_group/", methods= ["POST", "GET"])
 def add_group():
