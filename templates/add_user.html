@@ -1,9 +1,25 @@
 
 {% extends "layout.html" %}
 {%block content%}
+<style>
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 7px 16px;
+    text-align: center;
+    font-size: 10px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: green;
+  }
+  </style>
+
 <form method="POST">
-        <input name="text"></textarea>
-        <input type="submit">
+        <input name="text", maxlength="20", placeholder="Username here"></textarea>
+        <input class="button", name= "submit button", type="submit", value="Submit">
     </form>
     <h5><a href='/users/'>see users here</a></h5>
 {%endblock%}
