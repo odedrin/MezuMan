@@ -1,4 +1,4 @@
-# mezuman
+# MezuMan
 MezuMan is a web app that is meant to help it's users manage funds.
 with the help of MezuMan one can create users and groups of users, register user's expenses and distribute them between all of the group's members.
 MezuMan can save time and effort and do the calculations for you. It's UI is simple to use and there is no need for any computing skills.
