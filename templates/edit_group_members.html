@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {%block content%}
 
-        <h3>Members in {{groupname}} group:</h3>
+        <h3>Members of {{groupname}} group:</h3>
         {% for member in group['members'] %}
         <li>{{member}}
               <a href= {{url_for('remove_user', member=member, groupname=groupname)}}>remove</a></li>
@@ -9,7 +9,7 @@
 </ul>
     <h3>Users not in {{groupname}} group:</h3>
     {% for member in userscl.find() %}
-    {%if not member in group['members']%}
+    {%if not member['name'] in group['members']%}
     <li>{{member['name']}}
           <a href= {{url_for('add_new_member', new_member=member['name'], groupname=groupname)}}>Add user to group</a></li>
     {%else%}

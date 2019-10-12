@@ -36,6 +36,26 @@ def remove_user_from_group(username, groupname):
     return False
 
 
+def delete_user_doc(username):
+    all_groups = groupscl.find()
+    #remove user from all of it's groups
+    for group in all_groups: 
+        if username in group['members']: #update all groups' documents
+            remove_member_from_group(username, group['name'])
+    #delete user document from DB
+    userscl.find_one_and_delete({'name': username})
+    return True
+
+def delete_group_doc(groupname):
+    #remove group from all the users' group list
+    all_users = userscl.find()
+    for user in all_users:
+        if groupname in user['groups']:
+            remove_group_from_user(user['name'], groupname)
+    #remove group document from DB
+    groupscl.find_one_and_delete({'name': groupname})
+    return True
+
 if __name__ == "__main__":
     print(add_user_to_group('Moomoo', 'English Bulldogs'))
     

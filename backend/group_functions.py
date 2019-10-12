@@ -33,10 +33,9 @@ def edit_group(name, key, new_value):
 def push_member_in_group(username, groupname):
     try:
         #add member to nested array
+        groupscl.find_one_and_update({'name': groupname}, {'$push': {'members': username}})
         group = groupscl.find_one({'name': groupname})
-        groupscl.update({'name': groupname}, {'$push': {'members': username}})
-        groupsize = group['size'] #update group size
-        groupsize += 1 #TODO - make it update according to array length
+        groupsize = len(group['members']) #update group size
         edit_group(groupname, 'size', groupsize) 
         return True
     except:
@@ -45,10 +44,9 @@ def push_member_in_group(username, groupname):
 def remove_member_from_group(username, groupname):
     try:
         #remove member from nested array
+        groupscl.find_one_and_update({'name': groupname}, {'$pull': {'members': username}})
         group = groupscl.find_one({'name': groupname})
-        groupscl.update({'name': groupname}, {'$pull': {'members': username}})
-        groupsize = group['size'] #update group size
-        groupsize -= 1 
+        groupsize = len(group['members'])
         edit_group(groupname, 'size', groupsize) 
         return True
     except:

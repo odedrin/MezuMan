@@ -88,15 +88,21 @@ def group_info(groupname):
 @app.route("/users/delete_user/<username>", methods= ["POST", 'GET'])
 def delete_user(username):
     #missing: remove the user from all other groups and change size
-    user = userscl.find_one_and_delete({'name':username})
-    flash("The user %s was deleted Successfully" %(username))
+    deleted = delete_user_doc(username)
+    if deleted:
+        flash("The user %s was deleted Successfully" %(username))
+    else:
+        flash("User not deleted")
     return redirect('/users/', code= 302)
 
 @app.route("/groups/delete_group/<groupname>", methods= ["POST", 'GET'])
 def delete_group(groupname):
     #missing: remove group from all user's lists
-    group = groupscl.find_one_and_delete({'name':groupname})
-    flash("The group %s was deleted Successfully" %(groupname))
+    deleted = delete_group_doc(groupname)
+    if deleted:
+        flash("The group %s was deleted Successfully" %(groupname))
+    else:
+        flash("Group not deleted")
     return redirect('/groups/', code= 302)
 
 @app.route("/groups/<groupname>/edit_group_members", methods= ["POST", "GET"])
