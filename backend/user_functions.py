@@ -1,5 +1,6 @@
 import pymongo 
-from connect_data import database
+import backend
+from backend.connect_data import database
 
 userscl = database['Users']
 
@@ -28,18 +29,19 @@ def add_user_document(name):
     
 #key='name' or 'balance' 
 def edit_user(name, key, new_value): 
-    if user_exists('name'):
-        userscl.update({'name': name}, {"$set":{key : new_value}})
-        return True
-    print("User does not exist")
-    return False
+    userscl.update({'name': name}, {"$set":{key : new_value}})
+    return True
 
-def add_group_to_user(username, newgroup):
-    if group_exists(newgroup):
-        try:
-            user = userscl.update({'name':username}, {'$push': {'groups': newgroup}})
-            return True
-        except:
-            return False
-    print("Group does not exist")
-    return False
+def push_group_to_user(username, groupname):
+    try:
+        userscl.update({'name':username}, {'$push': {'groups': groupname}})
+        return True
+    except:
+        return False
+
+def remove_group_from_user(username, groupname):
+    try:
+        userscl.update({'name':username}, {'$pull': {'groups': groupname}})
+        return True
+    except:
+        return False

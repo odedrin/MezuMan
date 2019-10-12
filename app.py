@@ -1,10 +1,12 @@
 import pymongo
 from flask import Flask, flash, redirect, render_template, request, url_for
 import backend
+from backend.connect_data import connection
+from backend.user_functions import *
 from backend.group_functions import *
 from backend.group_functions import DuplicateError
-from backend.user_functions import *
-from backend.connect_data import database, connection
+from backend.user_group_integration import *
+
 
 
 #initialize database
@@ -85,12 +87,14 @@ def group_info(groupname):
         
 @app.route("/users/delete_user/<username>", methods= ["POST", 'GET'])
 def delete_user(username):
+    #missing: remove the user from all other groups and change size
     user = userscl.find_one_and_delete({'name':username})
     flash("The user %s was deleted Successfully" %(username))
     return redirect('/users/', code= 302)
 
 @app.route("/groups/delete_group/<groupname>", methods= ["POST", 'GET'])
 def delete_group(groupname):
+    #missing: remove group from all user's lists
     group = groupscl.find_one_and_delete({'name':groupname})
     flash("The group %s was deleted Successfully" %(groupname))
     return redirect('/groups/', code= 302)
@@ -98,12 +102,35 @@ def delete_group(groupname):
 @app.route("/groups/<groupname>/edit_group_members", methods= ["POST", "GET"])
 def edit_group_members(groupname):
     if request.method == "GET":
-        return render_template('edit_group_members.html', groupname=groupname)
-    groupname = request.form['text']
-    return groupname
+        title = "edit " + groupname
+        group = groupscl.find_one({'name':groupname})
+        return render_template('edit_group_members.html', title= title, groupname=groupname, group = group, userscl = userscl)
+
+@app.route("/groups/<groupname>/edit_group_members/add/<new_member>")
+def add_new_member(groupname, new_member):
+    try:
+        added = add_user_to_group(new_member, groupname)
+    except DuplicateError:
+        flash("%s is already a member in the group" %(new_member))
+        return redirect(url_for('edit_group_members', groupname= groupname), code= 302)    
+    if added:    
+        flash("%s added to %s!" %(new_member, groupname))
+    else:
+        flash("something went wrong")
+    return redirect(url_for('edit_group_members', groupname= groupname), code= 302)    
+
+@app.route("/groups/<groupname>/edit_group_members/remove/<member>")
+def remove_user(groupname, member):
+    removed = remove_user_from_group(member, groupname)
+    if removed:
+        flash("%s removed from %s!" %(member, groupname))
+    else:
+        flash("something went wrong")
+    return redirect(url_for('edit_group_members', groupname= groupname), code= 302) 
+
 
 if __name__ == "__main__":
     app.run(port=8000, debug=True)
-
+    
     connection.close()
 

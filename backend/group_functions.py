@@ -1,5 +1,6 @@
 import pymongo 
-from connect_data import database
+import backend
+from backend.connect_data import database
 
 groupscl = database['Groups']
 
@@ -26,11 +27,29 @@ def add_group_document(name):
 
 #key = 'name' or 'size'
 def edit_group(name, key, new_value): 
-    if group_exists('name'):
-        groupscl.update({'name': name}, {"$set":{key : new_value}})
-        return True
-    print("group does not exist")
-    return False 
+    groupscl.update({'name': name}, {"$set":{key : new_value}})
+    return True
 
-def add_member_in_group(groupname, newmember):
-    group= groupscl.update({'name': groupname}, {'$push': {'members': newmember}})
+def push_member_in_group(username, groupname):
+    try:
+        #add member to nested array
+        group = groupscl.find_one({'name': groupname})
+        groupscl.update({'name': groupname}, {'$push': {'members': username}})
+        groupsize = group['size'] #update group size
+        groupsize += 1 #TODO - make it update according to array length
+        edit_group(groupname, 'size', groupsize) 
+        return True
+    except:
+        return False
+        
+def remove_member_from_group(username, groupname):
+    try:
+        #remove member from nested array
+        group = groupscl.find_one({'name': groupname})
+        groupscl.update({'name': groupname}, {'$pull': {'members': username}})
+        groupsize = group['size'] #update group size
+        groupsize -= 1 
+        edit_group(groupname, 'size', groupsize) 
+        return True
+    except:
+        return False

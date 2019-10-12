@@ -1,10 +1,20 @@
 {% extends "layout.html" %}
 {%block content%}
 
-    <form method="POST">
-            <input name="text", maxlength="20", placeholder="username here"></textarea>
-            <input name= "submit button", type="submit", value="Submit">
-        </form>
+        <h3>Members in {{groupname}} group:</h3>
+        {% for member in group['members'] %}
+        <li>{{member}}
+              <a href= {{url_for('remove_user', member=member, groupname=groupname)}}>remove</a></li>
+   {%endfor%}
+</ul>
+    <h3>Users not in {{groupname}} group:</h3>
+    {% for member in userscl.find() %}
+    {%if not member in group['members']%}
+    <li>{{member['name']}}
+          <a href= {{url_for('add_new_member', new_member=member['name'], groupname=groupname)}}>Add user to group</a></li>
+    {%else%}
+          {%endif%}
+          {%endfor%}
     <h5><a href= {{url_for('group_info', groupname=groupname)}}>back to info
         </a></h5>
 {%endblock%}
