@@ -49,3 +49,13 @@ def remove_group_from_user(username, groupname):
         return True
     except:
         return False
+
+def transaction(debtorname, creditorname, amount):
+    debtor = userscl.find_one({'name': debtorname})
+    debtor_balance = debtor['balance'] - amount
+    edit_user(debtorname, "balance", debtor_balance)
+    creditor = userscl.find_one({'name': creditorname})
+    creditor_balance = creditor['balance'] + amount
+    edit_user(creditorname, "balance", creditor_balance)
+    return True
+

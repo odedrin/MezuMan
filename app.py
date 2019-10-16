@@ -134,8 +134,28 @@ def remove_user(groupname, member):
         flash("something went wrong")
     return redirect(url_for('edit_group_members', groupname= groupname), code= 302) 
 
+@app.route('/groups/<groupname>/new_expense/', methods = ["GET"])
+def new_expense_get(groupname):
+    group = groupscl.find_one({'name': groupname})
+    return render_template('new_expense.html', group= group, title = "New expense")
 
-if __name__ == "__main__":
+@app.route('/groups/<groupname>/new_expense/', methods = ['POST'])
+def new_expense_post(groupname):
+    group = groupscl.find_one({'name': groupname})
+    amount = request.form['amount']
+    amount = float(amount)
+    creditorname = request.form['creditorname']
+    if creditorname in group['members']:
+        equal_exspense(group, creditorname, amount)
+        flash("Expense added to %s" %(groupname))
+        return redirect(url_for('group_info', groupname = groupname))
+    else:
+        flash("%s not in %s group" %(creditorname, groupname))
+        return redirect('new_expense_get', groupname = groupname)
+
+if __name__ == "__main__": 
+    # ALL = groupscl.find_one({"name": "All"})
+    # equal_exspense(ALL, "Oded", 500)
     app.run(port=8000, debug=True)
     
     connection.close()

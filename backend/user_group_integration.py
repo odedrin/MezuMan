@@ -73,5 +73,10 @@ def delete_group_doc(groupname):
         groupscl.find_one_and_delete({'name': groupname})
         return True
     
-
+def equal_exspense(group, creditorname, amount):
+    personal_debt = amount/group['size']
+    for member in group['members']:
+        if member != creditorname:
+            transaction(member, creditorname, personal_debt)
+    return True
 

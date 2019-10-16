@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    {%extends 'layout.html'%}
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+<!-- CSS -->
+<style>
+.myForm {
+font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+font-size: 0.8em;
+width: 20em;
+padding: 1em;
+border: 1px solid #ccc;
+}
+
+.myForm * {
+box-sizing: border-box;
+}
+
+.myForm fieldset {
+border: none;
+padding: 0;
+}
+
+.myForm legend,
+.myForm label {
+padding: 0;
+font-weight: bold;
+}
+
+.myForm label.choice {
+font-size: 0.9em;
+font-weight: normal;
+}
+
+.myForm input[type="text"],
+.myForm input[type="tel"],
+.myForm input[type="email"],
+.myForm input[type="datetime-local"],
+.myForm select,
+.myForm textarea {
+display: block;
+width: 100%;
+border: 1px solid #ccc;
+font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+font-size: 0.9em;
+padding: 0.3em;
+}
+
+.myForm textarea {
+height: 100px;
+}
+
+.myForm button {
+padding: 1em;
+border-radius: 0.5em;
+background: #eee;
+border: none;
+font-weight: bold;
+margin-top: 1em;
+}
+
+.myForm button:hover {
+background: #ccc;
+cursor: pointer;
+}
+</style>
+
+</head>
+{%block content%}
+<body>
+
+<form class="myForm" method="POST">
+
+<p>
+<label>Amount payed
+<input type="number" name="amount" required> 
+</label> 
+</p>
+
+<fieldset>
+<legend>Who payed? ---- > TODO: change to radar button </legend>
+<p><label class="choice"> <input type="text" name="creditorname", placeholder="User from the group" required></label></p>
+</fieldset>
+
+<fieldset>
+<legend>who to include in the exspense ----> TODO</legend>
+{%for member in group['members']%}
+<p><label class="choice"> <input type="checkbox", name="debtors", checked> {{member}} </label></p>
+{%endfor%}
+</fieldset>
+
+<p>
+<label>Enter a description ----> TODO
+<input type="text" name="description" required, placeholder="e.g train tickets">
+</label> 
+</p>
+
+
+<p><button>Submit expense</button></p>
+
+</form>
+
+</body>
+{%endblock%}
+</html>
