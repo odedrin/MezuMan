@@ -25,7 +25,7 @@ def home():
 
 @app.route("/users/", methods= ["GET", "POST"])
 def users():
-    return render_template('users.html', title = 'Users',userscl =userscl)
+    return render_template('users.html', title = 'Users',userscl =userscl, debtscl = debtscl)
 
 @app.route("/groups/")
 def groups():
@@ -69,11 +69,16 @@ def add_group():
         flash("Something went wrong.")
         return render_template('add_group.html', title = 'Create group', groupscl =groupscl)
    
+app.jinja_env.globals.update(user_in_debt=user_in_debt)
+app.jinja_env.globals.update(show_debt=show_debt)
+app.jinja_env.globals.update(delete_group_doc=delete_group_doc)
+
 @app.route("/users/<username>", methods= ["POST", "GET"])
 def user_info(username):
     user = userscl.find_one({'name': username})
     if user != None:
-        return render_template('user_info.html', title= username, user= user)
+        return render_template('user_info.html', title= username, user= user,
+         debtscl = debtscl)
     else:
         return 'No such user'
 
@@ -81,7 +86,8 @@ def user_info(username):
 def group_info(groupname):
     group = groupscl.find_one({'name': groupname})
     if group != None:
-        return render_template('group_info.html', title= groupname, group= group)
+        return render_template('group_info.html', title= groupname, 
+        group= group, debtscl = debtscl, printed_list = [])
     else:
         return 'No such group'
         
@@ -143,7 +149,7 @@ def new_expense_get(groupname):
 def new_expense_post(groupname):
     group = groupscl.find_one({'name': groupname})
     amount = request.form['amount']
-    amount = float(amount)
+    amount = int(amount)
     creditorname = request.form['creditorname']
     if creditorname in group['members']:
         equal_exspense(group, creditorname, amount)
@@ -151,11 +157,16 @@ def new_expense_post(groupname):
         return redirect(url_for('group_info', groupname = groupname))
     else:
         flash("%s not in %s group" %(creditorname, groupname))
-        return redirect('new_expense_get', groupname = groupname)
+        return redirect(url_for('new_expense_get', groupname = groupname))
+
+@app.route('/settle_up/<debt_id>/')
+def settle_up(debt_id):
+    settled = settle_debt(debt_id)
+    if settled:
+        flash("settled")
+        return redirect('/home/')
 
 if __name__ == "__main__": 
-    # ALL = groupscl.find_one({"name": "All"})
-    # equal_exspense(ALL, "Oded", 500)
     app.run(port=8000, debug=True)
     
     connection.close()

@@ -5,6 +5,19 @@
 <h1>This is {{group['name']}} group.</h1>
 <h4>size: {{group['size']}}</h4>
 <h4>Members: {{group['members']}}</h4>
+<h4> debts between group's users: </h4>
+{%for member in group['members']%}
+    {%for debt in debtscl.find()%}<ul>
+        {%if debt['_id'] not in printed_list%}
+            {%if user_in_debt(member, debt['_id'])%}
+                {{show_debt(debt['_id'])}} <a href={{url_for('settle_up', debt_id = debt['_id'])}}>settle up</a>
+                <!{{printed_list.append(debt['_id'])}} >
+                {%endif%}
+                {%endif%}
+</ul>
+
+{%endfor%}{%endfor%}
+
 <ul>
     <h5>
         <a href= {{url_for('edit_group_members', groupname = group['name'])}}>Edit members</a> | 

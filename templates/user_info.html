@@ -5,6 +5,15 @@
 <h1>This is {{user['name']}}.</h1>
 <h4>balance: {{user['balance']}}</h4>
 <h4>Groups: {{user['groups']}}</h4>
+<h4> user's debts: </h4>
+{%for debt in debtscl.find()%}<ul>
+{%if user_in_debt(user['name'], debt['_id'])%}
+{{show_debt(debt['_id'])}}
+</ul>
+{%endif%}
+{%endfor%}
+
+
 <ul><h5>Edit</h5>
 <h5><a href='/users/'>Back</a></h5></ul>
     {%endblock%}

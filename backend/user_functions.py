@@ -1,6 +1,7 @@
 import pymongo 
 import backend
 from backend.connect_data import database
+from backend.debts_functions import *
 
 #define variable for 'users' collection 
 userscl = database['Users']
@@ -57,5 +58,6 @@ def transaction(debtorname, creditorname, amount):
     creditor = userscl.find_one({'name': creditorname})
     creditor_balance = creditor['balance'] + amount
     edit_user(creditorname, "balance", creditor_balance)
+    edit_debt(creditorname, debtorname, amount)
     return True
 
