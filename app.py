@@ -7,8 +7,6 @@ from backend.group_functions import *
 from backend.group_functions import DuplicateError
 from backend.user_group_integration import *
 
-
-
 #initialize database
 userscl = database['Users']
 groupscl = database['Groups']
@@ -19,7 +17,7 @@ app.config['SECRET_KEY'] = 'JH864Fzwimx792qs7s6ge6fs57MKAjh5jwiqks876dbapayeGFDJ
 app.config.from_object(__name__)
 
 @app.route("/")
-@app.route("/home")
+@app.route("/home/")
 def home():
     return render_template('homepage.html')
 
@@ -71,14 +69,15 @@ def add_group():
    
 app.jinja_env.globals.update(user_in_debt=user_in_debt)
 app.jinja_env.globals.update(show_debt=show_debt)
-app.jinja_env.globals.update(delete_group_doc=delete_group_doc)
+app.jinja_env.globals.update(show_event=show_event)
+
 
 @app.route("/users/<username>", methods= ["POST", "GET"])
 def user_info(username):
     user = userscl.find_one({'name': username})
     if user != None:
         return render_template('user_info.html', title= username, user= user,
-         debtscl = debtscl)
+         debtscl = debtscl, historycl= historycl)
     else:
         return 'No such user'
 
@@ -87,7 +86,7 @@ def group_info(groupname):
     group = groupscl.find_one({'name': groupname})
     if group != None:
         return render_template('group_info.html', title= groupname, 
-        group= group, debtscl = debtscl, printed_list = [])
+        group= group, debtscl = debtscl, printed_list = [], historycl= historycl)
     else:
         return 'No such group'
         
@@ -151,20 +150,24 @@ def new_expense_post(groupname):
     amount = request.form['amount']
     amount = int(amount)
     creditorname = request.form['creditorname']
+    description = request.form['description']
     if creditorname in group['members']:
-        equal_exspense(group, creditorname, amount)
+        equal_exspense(group, creditorname, amount, description)
         flash("Expense added to %s" %(groupname))
         return redirect(url_for('group_info', groupname = groupname))
     else:
         flash("%s not in %s group" %(creditorname, groupname))
         return redirect(url_for('new_expense_get', groupname = groupname))
 
-@app.route('/settle_up/<debt_id>/')
-def settle_up(debt_id):
+@app.route('/settle_up/<creditor>/<debtor>')
+def settle_up(creditor, debtor):
+    debt_id = debt_exists(creditor, debtor)
     settled = settle_debt(debt_id)
     if settled:
         flash("settled")
-        return redirect('/home/')
+        return redirect('/', code=302)
+    flash("debt not settled. An error occured")
+    return redirect('/')
 
 if __name__ == "__main__": 
     app.run(port=8000, debug=True)

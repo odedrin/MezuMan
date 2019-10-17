@@ -23,7 +23,7 @@ def add_user_document(name):
         if user_exists(name):
             print("this username already exists, choose another name")
             raise DuplicateError
-        new_user = {'name' : name, 'balance' : 0, 'groups' : [], 'user history' : []}
+        new_user = {'name' : name, 'balance' : 0, 'groups' : []}
         userscl.insert_one(new_user)
         return True
     print("invalid name inserted")

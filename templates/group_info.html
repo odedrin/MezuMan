@@ -2,21 +2,34 @@
     {%extends 'layout.html'%}
 
     {%block content%}
+    <!--basic group information-->
 <h1>This is {{group['name']}} group.</h1>
 <h4>size: {{group['size']}}</h4>
 <h4>Members: {{group['members']}}</h4>
 <h4> debts between group's users: </h4>
+<!--this section shows all debts of group members-->
 {%for member in group['members']%}
     {%for debt in debtscl.find()%}<ul>
         {%if debt['_id'] not in printed_list%}
             {%if user_in_debt(member, debt['_id'])%}
-                {{show_debt(debt['_id'])}} <a href={{url_for('settle_up', debt_id = debt['_id'])}}>settle up</a>
+                {{show_debt(debt['_id'])}}
                 <!{{printed_list.append(debt['_id'])}} >
+                {%if debt['balance'] != 0 %} <a href={{url_for('settle_up', creditor = debt['left'], debtor = debt['right'], destination= ("/groups/%s" %(group['name'])))}}>settle up</a>
+                {%endif%}
                 {%endif%}
                 {%endif%}
 </ul>
 
 {%endfor%}{%endfor%}
+
+<!--group expenses history-->
+<h4>Group history:</h4>
+{%for event in historycl.find()%}<ul>
+    {%if event['group'] == group['name']%}
+    {{show_event(event)}}
+    {%endif%}</ul>
+    {%endfor%}
+
 
 <ul>
     <h5>

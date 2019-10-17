@@ -3,6 +3,7 @@ import backend
 from backend.group_functions import *
 from backend.user_functions import *
 from backend.debts_functions import *
+from backend.history_functions import *
 
 #the following function adds user to group's members list and 
 #group to user's groups list in DB by calling 'push_member_in_group'
@@ -58,6 +59,11 @@ def delete_user_doc(username):
         for group in all_groups: 
             if username in group['members']: #update all groups' documents
                 remove_member_from_group(username, group['name'])
+        #settle and delete all user's debts
+        for debt in debtscl.find():
+            if user_in_debt(username, debt['_id']):
+                settle_debt(debt['_id'])
+                debtscl.find_one_and_delete({'_id': debt['_id']})     
         #delete user document from DB
         userscl.find_one_and_delete({'name': username})
         return True
@@ -75,11 +81,12 @@ def delete_group_doc(groupname):
         return True
     
 
-def equal_exspense(group, creditorname, amount):
+def equal_exspense(group, creditorname, amount, description='unknown'):
     personal_debt = amount/group['size']
     for member in group['members']:
         if member != creditorname:
             transaction(member, creditorname, personal_debt)
+            add_event('expense', group['name'], member, creditorname, personal_debt, description)
     return True
 
 def user_in_debt(username, debt_id):
@@ -88,11 +95,16 @@ def user_in_debt(username, debt_id):
         return True
     return False
 
-def settle_debt(debt_id):
-    debt = debtscl.find_one({'_id': debt_id})
-    left_user = userscl.find_one({'name', debt['left']})
-    right_user = userscl.find_one({'name', debt['right']})
-    edit_user(left_user['name'], 'balance', (left_user['balance'] - debt['balance']))
-    edit_user(right_user['name'], 'balance', (right_user['balance'] + debt['balance']))
-    debtscl.update_one({'_id': debt_id}, {'$set':{'balance': 0}})
-    return True
+def settle_debt(debt_id, groupname = None):
+    debt = debtscl.find_one({"_id": debt_id})
+    if debt != None:
+        left_user = userscl.find_one({'name': debt['left']})
+        right_user = userscl.find_one({'name': debt['right']})
+        edit_user(left_user['name'], 'balance', (left_user['balance'] - debt['balance']))
+        edit_user(right_user['name'], 'balance', (right_user['balance'] + debt['balance']))
+        debtscl.update_one({'_id': debt_id}, {'$set':{'balance': 0}})
+        add_event('settle_up', groupname, left_user['name'], right_user['name'], 0, 'settle up')
+        return True
+    else:
+        return False
+    

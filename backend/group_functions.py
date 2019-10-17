@@ -22,7 +22,7 @@ def add_group_document(name):
         if group_exists(name):
             print("this group's name already exists, choose another name")
             raise DuplicateError
-        new_group = {'name' : name, 'size': 0, 'members' : [], 'group history' : []}
+        new_group = {'name' : name, 'size': 0, 'members' : []}
         groupscl.insert_one(new_group)
         return True
     print("Invalid name")
