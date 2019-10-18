@@ -10,7 +10,11 @@
 <h4> user's debts: </h4>
 {%for debt in debtscl.find()%}<ul>
 {%if user_in_debt(user['name'], debt['_id'])%}
-{{show_debt(debt['_id'])}}{%if debt['balance'] != 0 %} <a href={{url_for('settle_up', creditor = debt['left'], debtor = debt['right'])}}>settle up</a>
+{{show_debt(debt['_id'])}}{%if debt['balance'] != 0 %}                 
+<form method = "POST", action = {{url_for('settle_up', creditor = debt['left'], debtor = debt['right'])}}>
+    <input type="hidden", name="destination", value={{"/users/%s" %(user['name'])}}>
+    <input type="hidden", name="groupname", value=None>
+    <input type= 'submit', name='settle_up', value = "Settle up">
 {%endif%}
 {%endif%}
 </ul>

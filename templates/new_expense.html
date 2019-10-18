@@ -80,25 +80,26 @@ cursor: pointer;
 <input type="number" name="amount" required> 
 </label> 
 </p>
-
-<fieldset>
-<legend>Who payed? ---- > TODO: change to radar button </legend>
-<p><label class="choice"> <input type="text" name="creditorname", placeholder="User from the group" required></label></p>
-</fieldset>
-
-<fieldset>
-<legend>who to include in the exspense ----> TODO</legend>
-{%for member in group['members']%}
-<p><label class="choice"> <input type="checkbox", name="debtors", checked> {{member}} </label></p>
-{%endfor%}
-</fieldset>
-
 <p>
+
 <label>Enter a description
-<input type="text" name="description" required, placeholder="e.g train tickets">
+<input type="text" name="description", placeholder="e.g train tickets">
 </label> 
 </p>
 
+<fieldset>
+<legend>Who payed? ---- > TODO: change to radar button </legend>
+{%for member in group['members']%}
+<p><label class="choice"> <input type="radio" name="creditorname", value= {{member}} required> {{member}}</label></p>
+{%endfor%}
+</fieldset>
+
+<fieldset>
+<legend>who to include in the exspense</legend>
+{%for member in group['members']%}
+<p><label class="choice"> <input type="checkbox", name="debtors", value= {{member}} checked> {{member}} </label></p>
+{%endfor%}
+</fieldset>
 
 <p><button>Submit expense</button></p>
 

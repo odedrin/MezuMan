@@ -81,9 +81,9 @@ def delete_group_doc(groupname):
         return True
     
 
-def equal_exspense(group, creditorname, amount, description='unknown'):
-    personal_debt = amount/group['size']
-    for member in group['members']:
+def equal_exspense(group, debtor_list, creditorname, amount, description='unknown'):
+    personal_debt = amount/len(debtor_list)
+    for member in debtor_list:
         if member != creditorname:
             transaction(member, creditorname, personal_debt)
             add_event('expense', group['name'], member, creditorname, personal_debt, description)
@@ -103,7 +103,7 @@ def settle_debt(debt_id, groupname = None):
         edit_user(left_user['name'], 'balance', (left_user['balance'] - debt['balance']))
         edit_user(right_user['name'], 'balance', (right_user['balance'] + debt['balance']))
         debtscl.update_one({'_id': debt_id}, {'$set':{'balance': 0}})
-        add_event('settle_up', groupname, left_user['name'], right_user['name'], 0, 'settle up')
+        add_event('settle_up', groupname, left_user['name'], right_user['name'], debt['balance'], 'settle up')
         return True
     else:
         return False

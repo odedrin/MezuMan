@@ -14,8 +14,12 @@
             {%if user_in_debt(member, debt['_id'])%}
                 {{show_debt(debt['_id'])}}
                 <!{{printed_list.append(debt['_id'])}} >
-                {%if debt['balance'] != 0 %} <a href={{url_for('settle_up', creditor = debt['left'], debtor = debt['right'], destination= ("/groups/%s" %(group['name'])))}}>settle up</a>
-                {%endif%}
+                {%if debt['balance'] != 0 %} 
+                <form method = "POST", action = {{url_for('settle_up', creditor = debt['left'], debtor = debt['right'])}}>
+                <input type="hidden", name="destination", value={{"/groups/%s" %(group['name'])}}>
+                <input type="hidden", name="groupname", value={{group['name']}}>
+                <input type= 'submit', name='settle_up', value = "Settle up">
+               </form>{%endif%}
                 {%endif%}
                 {%endif%}
 </ul>

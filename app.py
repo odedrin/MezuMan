@@ -151,23 +151,28 @@ def new_expense_post(groupname):
     amount = int(amount)
     creditorname = request.form['creditorname']
     description = request.form['description']
-    if creditorname in group['members']:
-        equal_exspense(group, creditorname, amount, description)
-        flash("Expense added to %s" %(groupname))
+    debtor_list = request.form.getlist('debtors')
+    if debtor_list == []:
+        flash("No members in expense")
         return redirect(url_for('group_info', groupname = groupname))
-    else:
-        flash("%s not in %s group" %(creditorname, groupname))
-        return redirect(url_for('new_expense_get', groupname = groupname))
+    if not description:
+        description = "unknown"
+    equal_exspense(group, debtor_list, creditorname, amount, description)
+    flash("Expense added to %s" %(groupname))
+    return redirect(url_for('group_info', groupname = groupname))
 
-@app.route('/settle_up/<creditor>/<debtor>')
+@app.route('/settle_up/<creditor>/<debtor>', methods = ['POST'])
 def settle_up(creditor, debtor):
     debt_id = debt_exists(creditor, debtor)
-    settled = settle_debt(debt_id)
+    groupname = request.form['groupname']
+    destination = request.form['destination']
+    settled = settle_debt(debt_id, groupname)
     if settled:
         flash("settled")
-        return redirect('/', code=302)
+        return redirect(destination, code=302)
     flash("debt not settled. An error occured")
-    return redirect('/')
+    return redirect(destination)
+
 
 if __name__ == "__main__": 
     app.run(port=8000, debug=True)
