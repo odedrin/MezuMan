@@ -3,7 +3,7 @@
 {%block content%}
 <body>
      <ul>
-          {% for user in userscl.find() %}
+          {% for user in users_list %}
                <li>{{user['name']}}
                      <a href= {{url_for('user_info', username=user['name'])}}>info
                      </a>/

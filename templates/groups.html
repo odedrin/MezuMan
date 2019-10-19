@@ -3,7 +3,7 @@
 {%block content%}
 <body>
      <ul>
-          {% for group in groupscl.find() %}
+          {% for group in groups_list %}
           <li>{{group['name']}}
                <a href= {{url_for('group_info', groupname=group['name'])}}>info
                </a>/
