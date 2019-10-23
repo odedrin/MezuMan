@@ -1,0 +1,113 @@
+
+  body {
+    font-family: "Lato", sans-serif;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  header {
+      background-color: rgb(41, 71, 206);;
+      color: rgb(109, 52, 26);
+      padding: 15px 230px;
+    }
+
+  .sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
+    float: left;
+  }
+  
+  .sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+  }
+  .sidenav p {
+    font: bold;
+    background-color: rgb(8, 2, 14);
+    font-family: monospace;
+    padding: 3px 8px 6px 16px;
+    font-size: 30px;
+    display: block;
+    color: #976997;
+  }
+
+  .sidenav .sub a{
+    font-size: 19px;
+    padding: 5px 30px;
+  }
+
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+  
+  .main {
+    font-size: 28px; /* Increased text to enable scrolling */
+    padding: 0px 100px;
+    position: relative;
+    right: 100px;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
+  
+  .column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+  }
+
+  /* Clear floats after image containers */
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  .flashed_messages {
+    position: fixed;
+    padding: 250px;
+    z-index: 2;
+
+  }
+
+  div.unique {
+    position: relative;
+    max-width: 100%;
+    left: 20%
+  }
+
+  footer {
+    color: rgb(119, 117, 117);
+    background-color: rgb(193, 190, 194);
+    padding: 8px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    max-width: 100%;
+    position: static;
+    bottom: 0;
+  }
+
+  .debts {
+    color: red;
+  }
+
+  .history {
+    padding: 15px;
+    width: 70%;
+    height: 200px;
+    overflow: scroll;
+    border: 1px solid #ccc;
+  }

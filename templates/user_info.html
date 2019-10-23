@@ -3,10 +3,16 @@
 
     {%block content%}
     <!--basic user information-->
-<h1>This is {{user['name']}}.</h1>
+    <div class= "container">
+        <header>
+            <h1>This is {{user['name']}}.</h1>
+        </header>
+    </div>
+
 <h4>balance: {{user['balance']}}</h4>
 <h4>Groups: {{user['groups']}}</h4>
 <!--this section shows all of user's debts-->
+<div class = "debts"
 <h4> user's debts: </h4>
 {%for debt in user_debts%}<ul>
     {%if debt['balance'] == 0 %}  
@@ -14,28 +20,33 @@
     {%elif debt['balance'] < 0 %} 
     {{debt['left']}} owes {{debt['right']}} {{debt['balance']|abs}}$  
     {%else%}
-    {{debt['right']}} owes {{debt['left']}} {{debt['balance']}}$  
-{%endif%}
-{% if debt['balance'] != 0 %}
-<form method = "POST", action = {{url_for('settle_up', creditor = debt['left'], debtor = debt['right'])}}>
+    {{debt['right']}} owes {{debt['left']}} {{debt['balance']}}$ 
+    {%endif%}
+    {% if debt['balance'] != 0 %}
+    <form method = "POST", action = {{url_for('settle_up', creditor = debt['left'], debtor = debt['right'])}}>
         <input type="hidden", name="destination", value={{"/users_page/%s" %(user['name'])}}>
         <input type="hidden", name="groupname", value=None>
-        <input type= 'submit', name='settle_up', value = "Settle up">
-        {%endif%}
+        <input type= 'submit', name='settle_up', value = "Settle up"></form>
+        {%endif%} </ul>
+        {%endfor%}
+</div>
 
-</ul>
-{%endfor%}
+
 
 <!--user expenses history-->
-<h4>User history:</h4>
-{%for event in user_history%}<ul>
-    {%if event['debtor'] == user['name'] or event['creditor'] == user['name']%}
-    {{event}}
-    {%endif%}</ul>
+    <h4>User history:</h4>
+<div class= 'history'>
+    {%for event in user_history%}
+    <ul>
+        {%if event['debtor'] == user['name'] or event['creditor'] == user['name']%}
+            {{event}}
+        {%endif%}
+    </ul>
     {%endfor%}
+</div>
 
 
-<ul><h5>Edit</h5>
+<ul>
 <h5><a href='/users_page/'>Back</a></h5></ul>
     {%endblock%}
 </html>

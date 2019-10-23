@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+{% extends "layout.html" %}
+{%block content%}
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+     <h1>Welcome to MezuMan!</h1>
+  
+     <!-- This section shows what you can do with MezuMan -->
+        <div class="row">
+          <div class="column">
+            Travel
+            <img src="http://services.travelsavers.com/AMGService.svc/REST/GetImage?ImageID=af246d65-0f7d-e711-9eb5-782bcb66a2f2&Width=450" alt="plane" height="200" width="200">
+          </div>
+          <div class="column">
+            Settle up with flatmates
+            <img src='https://flatmate.com/blog/wp-content/uploads/2015/11/flatmate-feature.jpg' alt= "Flatmates" height="200" width="200>
+          </div>
+        </div>
+        <div class="row">
+          <div class="column">
+            Pass the time 
+            <img src="https://s3.amazonaws.com/walrus-assets/img/Kingwell_Boredom-e1562811472249.jpg" alt="Bored" height="200" width="200>
+          </div>
+            Live life
+          <div class="column">
+            <img src="https://www.the-house.com/portal/wp-content/uploads/2012/04/tricks-header.jpg" alt="snowboard" height="200" width="200>
+          </div>
+        </div> 
+      
+
+  <!-- About Section -->
+  <div class="w3-container w3-padding-32" id="about">
+          <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">About</h3>
+          <p>This is a project .... text text
+          </p>
+        </div>
+     
+     </body>
+     {%endblock content%}
+</html>

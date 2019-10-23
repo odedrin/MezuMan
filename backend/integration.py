@@ -86,8 +86,8 @@ def equal_exspense(group, debtor_list, creditorname, amount, description='unknow
     personal_debt = amount/len(debtor_list)
     for member in debtor_list:
         if member != creditorname:
-            Users.transaction(member, creditorname, personal_debt)
-            History.add('expense', group['name'], member, creditorname, personal_debt, description)
+            Users.transaction(member, creditorname, int(personal_debt))
+            History.add('expense', group['name'], member, creditorname, int(personal_debt), description)
     return True
 
 def user_in_debt(username, debt_id):
@@ -96,7 +96,7 @@ def user_in_debt(username, debt_id):
         return True
     return False
 
-def settle_debt(debt_id, groupname = None):
+def settle_debt(debt_id, groupname):
     debt = debts.find_one({'_id': debt_id})
     if debt != None:
         left_user = users.find_one({'name': debt['left']})

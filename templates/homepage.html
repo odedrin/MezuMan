@@ -1,49 +1,36 @@
-<html>
-{% extends "layout.html" %}
-{%block content%}
-<body>
-     <h1>Welcome to MezuMan!</h1>
-  
-     <!-- This section shows what you can do with MezuMan -->
-  <div class="w3-container w3-padding-32" id="projects">
-          <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Users</h3>
-        </div>
-      
-        <div class="w3-row-padding">
-          <div class="w3-col l3 m6 w3-margin-bottom">
-            <div class="w3-display-container">
-              <div class="w3-display-topleft w3-black w3-padding">Travel</div>
-              <img src="/images/travel.jpg" alt="Image" style="width:100%">
-            </div>
-          </div>
-          <div class="w3-col l3 m6 w3-margin-bottom">
-            <div class="w3-display-container">
-              <div class="w3-display-topleft w3-black w3-padding">Settle up with flatmates</div>
-              <img src="/images/flatmates.jpg" alt="Image" style="width:100%">
-            </div>
-          </div>
-          <div class="w3-col l3 m6 w3-margin-bottom">
-            <div class="w3-display-container">
-              <div class="w3-display-topleft w3-black w3-padding">Just pass the time</div>
-              <img src="/images/passtime.jpg" alt="Image" style="width:100%">
-            </div>
-          </div>
-          <div class="w3-col l3 m6 w3-margin-bottom">
-            <div class="w3-display-container">
-              <div class="w3-display-topleft w3-black w3-padding">Live life</div>
-              <img src="/images/live.jpg" alt="Image" style="width:100%">
-            </div>
-          </div>
-        </div>
-      
 
-  <!-- About Section -->
-  <div class="w3-container w3-padding-32" id="about">
-          <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">About</h3>
-          <p>This is a project .... text text
-          </p>
+{%extends 'layout.html'%}
+
+
+
+ {%block content%}
+ <div class= "container">
+  <header>
+    <h1>Welcome to MezuMan!</h1>
+  </header>
+ </div>
+     <!-- This section shows what you can do with MezuMan -->
+        <div class="row">
+          <div class="column">
+            Travel
+            <img src="/static/images/travel.jpg" alt="plane" height="200">
+          </div>
+          <div class="column">
+            Settle up with flatmates
+            <img src='/static/images/settleup.jpeg' alt= "Flatmates" height="200">
+          </div>
         </div>
-     
-     </body>
-     {%endblock content%}
+        <div class="row">
+          <div class="column">
+            Pass the time 
+            <img src="https://s3.amazonaws.com/walrus-assets/img/Kingwell_Boredom-e1562811472249.jpg" alt="Bored" height="200">
+          </div>
+            Live life
+          <div class="column">
+            <img src="/static/images/live.jpg" alt="snowboard" height="200">
+          </div>
+        </div>
+        
+    {%endblock content%}
+
 </html>

@@ -1,7 +1,11 @@
 <html>
 {% extends "layout.html" %}
 {%block content%}
-<body>
+<div class= "container">
+     <header>
+          <h1>Groups menu</h1>
+     </header>
+</div>
      <ul>
           {% for group in groups_list %}
           <li>{{group['name']}}
@@ -11,6 +15,5 @@
     {%endfor%}</ul>
           <h3><a href=/add_group/>Create new group</a></h3>
 
-</body>
 {%endblock content%}
 </html>
