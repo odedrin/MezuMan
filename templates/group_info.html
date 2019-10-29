@@ -11,10 +11,8 @@
     <div class= "container">
     <h4>size: {{group['size']}}</h4>
     <h4>Members: {{group['members']}}</h4>
+    <h4> debts between group's users: </h4>
 <div class = 'debts'>
-    <div class = container>
-        <h4> debts between group's users: </h4>
-    </div>
     <!--this section shows all debts of group members-->
     {%for debt in group_debts%}<ul>
         {%if debt['balance'] == 0 %}  

@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {%block content%}
-
+<div class = 'container'>
         <h3>Members of {{group['name']}} group:</h3>
         {% for member in group['members'] %}
         <li>{{member}}
@@ -17,4 +17,5 @@
           {%endfor%}
     <h5><a href= {{url_for('group_info', groupname=group['name'])}}>back to info
         </a></h5>
+      </div>
 {%endblock%}

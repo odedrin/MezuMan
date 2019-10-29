@@ -13,8 +13,8 @@
 <h4>balance: {{user['balance']}}</h4>
 <h4>Groups: {{user['groups']}}</h4>
 <!--this section shows all of user's debts-->
-<div class = "debts"
 <h4> user's debts: </h4>
+<div class = "debts">
 {%for debt in user_debts%}<ul>
     {%if debt['balance'] == 0 %}  
     {{debt['left']}} and {{debt['right']}} are settled up
