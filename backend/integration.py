@@ -56,7 +56,7 @@ def delete_user_doc(username):
     #settle and delete all user's debts
     for debt in debts.find():
         if user_in_debt(username, debt['_id']):
-            settle_debt(debt['_id'])
+            settle_debt(debt['_id'], None)
             debts.find_one_and_delete({'_id': debt['_id']})     
     #delete user document from DB
         for event in history.find():

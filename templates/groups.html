@@ -1,12 +1,14 @@
 <html>
 {% extends "layout.html" %}
 {%block content%}
-<div class= "container">
+
      <header>
           <h1>Groups menu</h1>
      </header>
-</div>
+<div class= "container">
+     <div class= 'groups_list'>
      <ul>
+     
           {% for group in groups_list %}
           <li>{{group['name']}}
                <a href= {{url_for('group_info', groupname=group['name'])}}>info
@@ -14,6 +16,7 @@
                <a href= {{url_for('delete_group', groupname=group['name'])}}>delete</a></li>
     {%endfor%}</ul>
           <h3><a href=/add_group/>Create new group</a></h3>
-
+</div>
+</div>
 {%endblock content%}
 </html>

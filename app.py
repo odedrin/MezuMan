@@ -160,11 +160,14 @@ def remove_user(groupname, member):
 @app.route('/groups_page/<groupname>/new_expense/', methods = ['GET'])
 def new_expense_get(groupname):
     group = groups.find_one({'name': groupname})
+    if group['size'] == 0:
+        flash('No members in group')
+        return redirect(url_for('group_info', groupname = groupname))  
     return render_template('new_expense.html', group= group, title = 'New expense')
 
 @app.route('/groups_page/<groupname>/new_expense/', methods = ['POST'])
 def new_expense_post(groupname):
-    group = groups.find_one({'name': groupname})
+    group = groups.find_one({'name': groupname})  
     amount = request.form['amount']
     amount = int(amount)
     creditorname = request.form['creditorname']
@@ -190,6 +193,10 @@ def settle_up(creditor, debtor):
         return redirect(destination, code=302)
     flash('debt not settled. An error occured')
     return redirect(destination)
+
+@app.route('/meet_oded/')
+def meet_oded():
+    return render_template('meet_Oded.html', title = 'Meet Oded')
 
 if __name__ == '__main__': 
     app.run(port=8000, debug=True)

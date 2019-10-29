@@ -3,11 +3,12 @@
 
     {%block content%}
     <!--basic user information-->
-    <div class= "container">
+
         <header>
             <h1>This is {{user['name']}}.</h1>
         </header>
-    </div>
+        
+    <div class= "container">
 
 <h4>balance: {{user['balance']}}</h4>
 <h4>Groups: {{user['groups']}}</h4>
@@ -39,7 +40,11 @@
     {%for event in user_history%}
     <ul>
         {%if event['debtor'] == user['name'] or event['creditor'] == user['name']%}
-            {{event}}
+            {%if event['type'] == 'expense'%}
+                {{event['debtor']}} paid {{event['creditor']}} {{event['amount']}}$
+            {%elif event['type'] == 'settle_up'%}
+                {{event['debtor']}} and {{event['creditor']}} settled up ({{event['amount']|abs}}$)
+            {%endif%}
         {%endif%}
     </ul>
     {%endfor%}
@@ -48,5 +53,6 @@
 
 <ul>
 <h5><a href='/users_page/'>Back</a></h5></ul>
+</div>
     {%endblock%}
 </html>

@@ -3,11 +3,12 @@
 
     {%block content%}
     <!--basic group information-->
-    <div class= "container">
+
         <header>
             <h1>This is {{group['name']}} group.</h1>
         </header>
-    </div>
+        
+    <div class= "container">
     <h4>size: {{group['size']}}</h4>
     <h4>Members: {{group['members']}}</h4>
 <div class = 'debts'>
@@ -38,7 +39,11 @@
     {%for event in group_history%}
         <ul>
             {%if event['group'] == group['name']%}
-                {{event}}
+                {%if event['type'] == 'expense'%}
+                    {{event['debtor']}} paid {{event['creditor']}} {{event['amount']}}$
+                {%elif event['type'] == 'settle_up'%}
+                    {{event['debtor']}} and {{event['creditor']}} settled up ({{event['amount']|abs}}$)
+               {%endif%}
             {%endif%}
         </ul>
     {%endfor%}
@@ -49,5 +54,6 @@
         <a href= {{url_for('edit_group_members', groupname = group['name'])}}>Edit members</a> | 
         <a href={{url_for('new_expense_get', groupname = group['name'])}}>New expense</a></h5>
 <h5><a href='/groups_page/'>Back</a></h5></ul>
+</div>
     {%endblock%}
 </html>

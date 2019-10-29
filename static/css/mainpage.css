@@ -1,14 +1,15 @@
 
-  body {
+  html, body {
     font-family: "Lato", sans-serif;
-    max-width: 960px;
+    max-width: 100%;
     margin: 0 auto;
+    overflow-x: hidden;
   }
 
   header {
-      background-color: rgb(41, 71, 206);;
+      background-color: rgb(86, 114, 236);;
       color: rgb(109, 52, 26);
-      padding: 15px 230px;
+      padding: 10px 220px;
     }
 
   .sidenav {
@@ -23,14 +24,14 @@
     padding-top: 20px;
     float: left;
   }
-  
+
   .sidenav a {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 25px;
     color: #818181;
     display: block;
-  }
+  } 
   .sidenav p {
     font: bold;
     background-color: rgb(8, 2, 14);
@@ -49,23 +50,24 @@
   .sidenav a:hover {
     color: #f1f1f1;
   }
-  
+
   .main {
     font-size: 28px; /* Increased text to enable scrolling */
     padding: 0px 100px;
     position: relative;
     right: 100px;
-  }
+    float: right;
+  } 
   
   @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
   }
-  
+   
   .column {
     float: left;
     width: 33.33%;
-    padding: 5px;
+    padding: 5px; 
   }
 
   /* Clear floats after image containers */
@@ -75,18 +77,27 @@
     display: table;
   }
 
-  .flashed_messages {
-    position: fixed;
-    padding: 250px;
-    z-index: 2;
-
+  body .flashed_messages {
+    position: relative;
+    left: 300px;
+    color: red;
   }
 
   div.unique {
     position: relative;
     max-width: 100%;
-    left: 20%
+    left: 18%
   }
+
+.users_list h3 {
+  position: relative;
+  left: 50px;
+}
+
+.groups_list h3 {
+  position: relative;
+  left: 50px;
+}
 
   footer {
     color: rgb(119, 117, 117);
@@ -110,4 +121,13 @@
     height: 200px;
     overflow: scroll;
     border: 1px solid #ccc;
+  }
+
+  .add_type {
+    padding: 30px;
+  }
+
+  .container {
+    position: relative;
+    left: 50px;
   }
