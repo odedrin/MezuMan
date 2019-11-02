@@ -36,6 +36,7 @@ def groups_page():
 def add_user():
     if request.method == 'GET':
          return render_template('add_user.html', title = 'Add user')
+    #if POST used:
     username = request.form['username']
     if len(username.strip()) in range(2, 21):
         try:    
@@ -56,6 +57,7 @@ def add_user():
 def add_group():
     if request.method == 'GET':
          return render_template('add_group.html', title = 'Add group')
+    #if POST used:
     groupname = request.form['groupname']
     if len(groupname.strip()) in range(2, 21):
         try:
@@ -72,11 +74,6 @@ def add_group():
         flash('Invalid name, Try again')
         return render_template('add_group.html', title = 'Create group')
 
-# app.jinja_env.globals.update(user_in_debt=user_in_debt)
-# app.jinja_env.globals.update(show_debt=show_debt)
-# app.jinja_env.globals.update(show_event=show_event)
-
-
 @app.route('/users_page/<username>')
 def user_info(username):
     user = users.find_one({'name': username})
@@ -84,13 +81,11 @@ def user_info(username):
         user_debts = []
         user_history = []
         for debt in debts.find():
-            if user_in_debt(username, debt['_id']):
+            if user_in_debt(username, debt['_id']): #only show relevant debts
                 user_debts.append(debt)
-                # debt_strings.append(Debts.show(debt['_id']))
         for event in history.find():
             if event['debtor'] == user['name'] or event['creditor'] == user['name']:
                 user_history.append(event)
-                # event_strings.append(History.show(event))
         return render_template('user_info.html', title= username, user= user,
          user_debts = user_debts, user_history= user_history)
 
@@ -114,18 +109,16 @@ def group_info(groupname):
        
 @app.route('/users_page/delete_user/<username>', methods= ['POST', 'GET'])
 def delete_user(username):
-    #missing: remove the user from all other groups and change size
-    deleted = delete_user_doc(username)
+    deleted = delete_user_doc(username) #from integration.py
     if deleted:
         flash('The user %s was deleted Successfully' %(username))
     else:
         flash('User not deleted')
     return redirect('/users_page/', code= 302)
 
-@app.route('/groups_page/delete_group/<groupname>', methods= ['POST', 'GET'])
+@app.route('/groups_page/delete_group/<groupname>')
 def delete_group(groupname):
-    #missing: remove group from all user's lists
-    deleted = delete_group_doc(groupname)
+    deleted = delete_group_doc(groupname) #from integration.py
     if deleted:
         flash('The group %s was deleted Successfully' %(groupname))
     else:
@@ -160,7 +153,7 @@ def remove_user(groupname, member):
 @app.route('/groups_page/<groupname>/new_expense/', methods = ['GET'])
 def new_expense_get(groupname):
     group = groups.find_one({'name': groupname})
-    if group['size'] == 0:
+    if group['size'] == 0: #does not allow new expense in empty group
         flash('No members in group')
         return redirect(url_for('group_info', groupname = groupname))  
     return render_template('new_expense.html', group= group, title = 'New expense')

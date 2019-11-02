@@ -7,6 +7,7 @@ debts = database['Debts']
 
 
 class Debts():
+    #creates list of all debts
     @staticmethod
     def make_list():
         debts_list = []
@@ -22,8 +23,8 @@ class Debts():
         debt = debts.insert_one(new_debt)
         return debt.inserted_id
 
-#check if user1 and user2 already have an existing debt, no matter the sides. 
-# if so returns the debt's id in the DB, if not returns False.
+#finds a debt between user1 and user2.
+# if exists returns the debt's _id, if not, returns False.
     @staticmethod
     def find(user1, user2):
         for debt in debts.find():
@@ -33,7 +34,7 @@ class Debts():
                 return debt['_id']
         return None
 
-#if debt already exists between the users it is updated. if not a new debt is created.
+#updates debt betwen 2 users. if no such debt, a new debt is created.
 #returns debt DB id.
     @staticmethod
     def edit(creditor, debtor, balance):
@@ -47,21 +48,3 @@ class Debts():
             return debt_id
         else:
             return Debts.add(creditor, debtor, balance)
-
-#return string: '(debtor) owes (creditor) (balance)' or '(debtor) and (creditor) settled up'
-    @staticmethod
-    def show(debt_id):
-        debt = debts.find_one({'_id': debt_id})
-        balance = debt['balance']
-        if balance == 0:
-            result = '%s and %s are settled up' %(debt['left'], debt['right'])
-            return result
-        if balance > 0:
-            creditor = debt['left']
-            debtor = debt['right']
-        else:
-            creditor = debt['right']
-            debtor = debt['left']
-            balance = -balance
-        result = '%s owes %s %d$' %(debtor, creditor, balance)
-        return result

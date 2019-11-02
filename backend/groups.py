@@ -10,13 +10,14 @@ class DuplicateError(Exception):
 
 class Groups():
     @staticmethod
+    #makes list of all groups
     def make_list():
         groups_list = []
         for group in groups.find():
             groups_list.append(group)
         return groups_list
 
-#If exists returns group id, if not- returns None.
+    #Checks if group exists
     @staticmethod
     def group_exists(name):
         group = groups.find_one({'name' : name})
@@ -24,9 +25,8 @@ class Groups():
             return True
         return False
 
-#Following funtions: if successful- returns True.
-
-#create group document in DB and make sure there is no other group with the same name
+#makes sure no other group with the same name exists
+#  and creates new group document in groups collection
     @staticmethod
     def add(name):
         if Groups.group_exists(name):
@@ -36,7 +36,7 @@ class Groups():
         groups.insert_one(new_group)
         return True
 
-#key = 'name' or 'size'
+#Edit group. keys to insert = 'name' or 'size'
     @staticmethod
     def edit(name, key, new_value): 
         groups.update({'name': name}, {'$set':{key : new_value}})

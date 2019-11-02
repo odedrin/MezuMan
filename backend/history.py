@@ -7,13 +7,7 @@ from datetime import datetime
 history = database['History']
 
 class History():
-    @staticmethod
-    def make_list():
-        history_list = []
-        for event in history.find():
-            history_list.append(event)
-        return history_list
-
+    #create new event document in history collection
     @staticmethod
     def add(event_type, group, debtor, creditor, amount, description):
         now = datetime.now()
@@ -26,15 +20,3 @@ class History():
         except:
             return False
    
-    @staticmethod
-    def show(event):
-        if event['type'] == 'expense':
-            result = ('%s- %s gave %s %d$ for %s in %s group' %(event['time'], event['creditor'], event['debtor'], event['amount'], event['description'], event['group']))
-        elif event['type'] == 'settle_up':
-            if event['amount'] < 0:
-                result = ('%s- %s and %s settled up (%s payed %d$)' %(event['time'], event['creditor'], event['debtor'], event['debtor'], -event['amount']))
-            else:
-                result = ('%s- %s and %s settled up (%s payed %d$)' %(event['time'], event['creditor'], event['debtor'], event['creditor'], event['amount']))
-        else:
-            return 'invalid event type'
-        return result

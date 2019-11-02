@@ -12,13 +12,14 @@ class DuplicateError(Exception):
 
 class Users():
     @staticmethod
+    #make list of all users
     def make_list():
         users_list = []
         for user in users.find():
             users_list.append(user)
         return users_list
 
-   #Following funtions: if successful- returns True.
+    #check if user exsits
     @staticmethod
     def user_exists(name):
         user = users.find_one({'name' : name}) 
@@ -38,7 +39,7 @@ class Users():
         except:
             return False
         
-    #key='name' or 'balance' to decide what to update
+    #edit user's balance
     @staticmethod
     def edit_balance(name, new_value): 
         try:
@@ -62,7 +63,7 @@ class Users():
         users.update({'name':username}, {'$pull': {'groups': groupname}})
         return True
 
-
+    #update users's balances and edit debt accordingly.
     @staticmethod
     def transaction(debtorname, creditorname, amount):
         debtor = users.find_one({'name': debtorname})

@@ -6,8 +6,8 @@ from backend.debts import *
 from backend.history import *
 
 #the following function adds user to group's members list and 
-#group to user's groups list in DB by calling 'push_member_in_group'
-#and 'push_group_to_user' functions.
+#group to user's groups list in DB by calling 'Groups.add_member'
+#and 'Users.add_group' methods.
 #returns True if successful, False if not and 
 #raises DuplicateError if user already in group.
 def add_user_to_group(username, groupname):
@@ -26,9 +26,9 @@ def add_user_to_group(username, groupname):
         remove_member_from_group(username, group)
     return False
 
-#the following function removess user from group's members list and
-#group from user's groups list in DB by calling 'remove_member_from_group'
-# and 'remove_group_from_user' functions.
+#the following function removes user from group's members list and
+#group from user's groups list in DB by calling 'Groups.remove_member'
+# and 'Users.remove_group' functions.
 #returns True if successful and False if not
 def remove_user_from_group(username, groupname):
     group = groups.find_one({'name': groupname})
@@ -61,9 +61,9 @@ def delete_user_doc(username):
     #delete user document from DB
         for event in history.find():
             if event['debtor'] == username:
-                history.find_one_and_update({'_id': event['_id']}, {'$set': {'debtor': username + " - deleted"}})
+                history.find_one_and_update({'_id': event['_id']}, {'$set': {'debtor': username + ' - deleted'}})
             elif event['creditor'] == username:
-                history.find_one_and_update({'_id': event['_id']}, {'$set': {'creditor': username + " - deleted"}})
+                history.find_one_and_update({'_id': event['_id']}, {'$set': {'creditor': username + ' - deleted'}})
     users.find_one_and_delete({'name': username})
     return True
 
@@ -76,12 +76,14 @@ def delete_group_doc(groupname):
             Users.remove_group(user['name'], groupname)
     for event in history.find():
         if event['group'] == groupname:
-            history.find_one_and_update({'_id': event['_id']}, {'$set': {'group': groupname + " - deleted"}})
+            history.find_one_and_update({'_id': event['_id']}, {'$set': {'group': groupname + ' - deleted'}})
     #remove group document from DB
     groups.find_one_and_delete({'name': groupname})
     return True
     
-
+#create an expense with one creditor and multiple debtors. expense devided equally
+#between debtors and debts are edited using 'Users.transaction' method. 
+#new events added to historyn collection.
 def equal_exspense(group, debtor_list, creditorname, amount, description='unknown'):
     personal_debt = amount/len(debtor_list)
     for member in debtor_list:
@@ -90,12 +92,14 @@ def equal_exspense(group, debtor_list, creditorname, amount, description='unknow
             History.add('expense', group['name'], member, creditorname, int(personal_debt), description)
     return True
 
+#check if a user is involved in a specific debt
 def user_in_debt(username, debt_id):
     debt = debts.find_one({'_id': debt_id})
     if debt['left'] == username or debt['right'] == username:
         return True
     return False
 
+#change debt to 0$, update both users' balances accordingly and add new event to history
 def settle_debt(debt_id, groupname):
     debt = debts.find_one({'_id': debt_id})
     if debt != None:
