@@ -22,7 +22,7 @@ app.config.from_object(__name__)
 def home():
     return render_template('homepage.html')
 
-@app.route('/users_page/', methods= ['GET', 'POST'])
+@app.route('/users_page/')
 def users_page():
     users_list = Users.make_list()
     return render_template('users.html', title = 'Users',users_list =users_list)
@@ -89,7 +89,7 @@ def user_info(username):
         return render_template('user_info.html', title= username, user= user,
          user_debts = user_debts, user_history= user_history)
 
-@app.route('/groups_page/<groupname>', methods= ['POST', 'GET'])
+@app.route('/groups_page/<groupname>')
 def group_info(groupname):
     group = groups.find_one({'name': groupname})
     if group != None:
@@ -107,7 +107,7 @@ def group_info(groupname):
     else:
         return 'No such group'
        
-@app.route('/users_page/delete_user/<username>', methods= ['POST', 'GET'])
+@app.route('/users_page/delete_user/<username>')
 def delete_user(username):
     deleted = delete_user_doc(username) #from integration.py
     if deleted:
@@ -150,7 +150,7 @@ def remove_user(groupname, member):
         flash('something went wrong')
     return redirect(url_for('edit_group_members', groupname= groupname), code= 302) 
 
-@app.route('/groups_page/<groupname>/new_expense/', methods = ['GET'])
+@app.route('/groups_page/<groupname>/new_expense/')
 def new_expense_get(groupname):
     group = groups.find_one({'name': groupname})
     if group['size'] == 0: #does not allow new expense in empty group
